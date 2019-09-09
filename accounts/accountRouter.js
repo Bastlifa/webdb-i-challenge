@@ -57,5 +57,27 @@ router.post('/', (req, res) =>
     }
 })
 
+router.delete('/:id', (req, res) =>
+{
+    const id = req.params.id
+    db('accounts')
+        .where({id}).del()
+            .then(response =>
+                {
+                    if(response)
+                    {
+                        res.status(200).json(response)
+                    }
+                    else
+                    {
+                        res.status(404).json({ errorMessage: `Could not find account with id ${id}` })
+                    }
+                })
+            .catch(err =>
+                {
+                    res.status(500).json({ errorMessage: `Internal Error: Could not delete ` })
+                })
+})
+
 
 module.exports = router
