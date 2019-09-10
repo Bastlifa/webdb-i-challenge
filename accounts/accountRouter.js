@@ -6,14 +6,22 @@ const router = express.Router()
 router.get('/', (req, res) =>
 {
     const queryObj = req.query
-    let query = db('accounts')
-        if(queryObj.sortby)
-        {
-            if(queryObj.sortdir) query.orderBy(queryObj.sortby, queryObj.sortdir)
-            else query.orderBy(queryObj.sortby)
-        }
-        if (queryObj.limit) query.limit(Number(queryObj.limit))
+    const limit = queryObj.limit || 'All'
+    const sortby = queryObj.sortby || 'id'
+    const sortdir = queryObj.sortdir || 'asc'
+    
+    // let query = db('accounts')
+
+        // if(queryObj.sortby)
+        // {
+        //     if(queryObj.sortdir) query.orderBy(queryObj.sortby, queryObj.sortdir)
+        //     else query.orderBy(queryObj.sortby)
+        // }
+        // if (queryObj.limit) query.limit(Number(queryObj.limit))
         
+        db('accounts')
+            .orderBy(sortby, sortdir)
+            .limit(limit)
         .then(response =>
             {
                 res.status(200).json(response)
